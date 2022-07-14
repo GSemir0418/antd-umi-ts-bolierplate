@@ -1,0 +1,39 @@
+/**
+* 布局样式
+*/
+// header高度
+.ant-pro-global-header {
+  height: var(--g-header-height) !important;
+}
+
+// title样式
+.ant-pro-sider-logo {
+  height: var(--g-header-height);
+  padding: 11px 8px !important;
+  background-color: var(--g-sider-bg-color) !important;
+  h1 {
+    margin: 0 !important;
+    font-weight: 600;
+    font-size: 17px !important;
+  }
+}
+
+// sider背景色
+.ant-layout-sider {
+  // background-color: #3759a0 !important;
+  background-color: var(--g-sider-bg-color) !important;
+}
+
+// sider二级菜单背景色
+.ant-menu-dark .ant-menu-inline.ant-menu-sub {
+  background-color: var(--g-sider-second-bg-color) !important;
+}
+
+// sider选中状态样式
+.ant-menu-item-selected {
+  background: linear-gradient(
+    to right,
+    var(--g-sider-selected-color-1),
+    var(--g-sider-selected-color-2)
+  );
+}
