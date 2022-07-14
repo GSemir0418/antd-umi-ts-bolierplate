@@ -5,7 +5,6 @@
 .ant-pro-global-header {
   height: var(--g-header-height) !important;
 }
-
 // title样式
 .ant-pro-sider-logo {
   height: var(--g-header-height);
@@ -17,18 +16,15 @@
     font-size: 17px !important;
   }
 }
-
 // sider背景色
 .ant-layout-sider {
   // background-color: #3759a0 !important;
   background-color: var(--g-sider-bg-color) !important;
 }
-
 // sider二级菜单背景色
 .ant-menu-dark .ant-menu-inline.ant-menu-sub {
   background-color: var(--g-sider-second-bg-color) !important;
 }
-
 // sider选中状态样式
 .ant-menu-item-selected {
   background: linear-gradient(
@@ -36,4 +32,84 @@
     var(--g-sider-selected-color-1),
     var(--g-sider-selected-color-2)
   );
+}
+
+/**
+* 表格样式
+*/
+// 表头样式
+.ant-table-thead > tr > th {
+  color: var(--g-table-th-color) !important;
+  background: var(--g-table-th-bg-color) !important;
+}
+// 单双行color
+.table-line-even > td {
+  background-color: var(--g-table-tr-even-bg-color);
+}
+// 表格toolbar样式
+.ant-pro-table-list-toolbar-container {
+  padding: 0 0 12px 0 !important;
+}
+
+/**
+* Card组件样式
+*/
+.ant-card-body,
+.ant-pro-card-body {
+  padding: 12px !important;
+}
+
+/**
+*  Button组件样式
+*/
+.ant-btn {
+  border-radius: var(--g-button-border-radius);
+}
+// 按钮组圆角
+.ant-btn-group > .ant-btn:first-child:not(:last-child),
+.ant-btn-group > span:first-child:not(:last-child) > .ant-btn {
+  border-top-left-radius: var(--g-button-border-radius);
+  border-bottom-left-radius: var(--g-button-border-radius);
+}
+.ant-btn-group > .ant-btn:last-child:not(:first-child),
+.ant-btn-group > span:last-child:not(:first-child) > .ant-btn {
+  border-top-right-radius: var(--g-button-border-radius);
+  border-bottom-right-radius: var(--g-button-border-radius);
+}
+
+/**
+* Form及FormItem样式
+*/
+// 全局选择框、输入框、时间选择框、文本编辑框拟态样式
+.ant-select-selector,
+.ant-input-affix-wrapper,
+.ant-input-affix-wrapper-disabled,
+.ant-input-number,
+.ant-picker,
+.ant-input.pro-field.pro-field-md {
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 2px 2px 4px 0 #eee, -2px -2px 4px 0 #fff, 1px 1px 2px 0 #c9c9c9 inset !important;
+}
+// 数字选择框handler定位
+.ant-input-number-handler-wrap {
+  top: 10%;
+  right: 3px;
+  height: 80%;
+}
+// switch样式
+.ant-switch {
+  min-width: 36px !important;
+}
+// 树结构列表样式
+.ant-tree.ant-tree-icon-hide {
+  background-color: #f9f9f9;
+}
+
+/**
+* 页面wrapper样式
+*/
+.wrapper-full {
+  height: calc(100vh - 120px);
+  overflow: hidden;
 }
