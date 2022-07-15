@@ -1,15 +1,18 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi';
-import { join } from 'path';
+import { defineConfig } from 'umi'
+import { join } from 'path'
 
-import defaultSettings from './defaultSettings';
-import proxy from './proxy';
-import routes from './routes';
+import defaultSettings from './defaultSettings'
+import proxy from './proxy'
+import routes from './routes'
 
-const { REACT_APP_ENV } = process.env;
+const { REACT_APP_ENV } = process.env
 
 export default defineConfig({
   hash: true,
+  // 解决访问路由刷新后404的问题
+  history: { type: 'hash' },
+  multitabs: {},
   antd: {},
   dva: {
     hmr: true,
@@ -70,7 +73,7 @@ export default defineConfig({
     },
   ],
   nodeModulesTransform: { type: 'none' },
-  mfsu: {},
+  // mfsu: {},
   webpack5: {},
   exportStatic: {},
-});
+})
