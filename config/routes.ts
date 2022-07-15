@@ -43,10 +43,16 @@
     component: './TableList',
   },
   {
+    name: 'test-table',
+    icon: 'table',
+    path: '/test-table',
+    component: './TestDva',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
   {
     component: './404',
   },
-];
+]
