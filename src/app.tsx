@@ -34,15 +34,16 @@ export async function getInitialState(): Promise<{
     return undefined
   }
   // 如果不是登录页面，执行
-  if (history.location.pathname !== loginPath) {
-    const currentUser = await fetchUserInfo()
-    return {
-      fetchUserInfo,
-      currentUser,
-      settings: defaultSettings,
-    }
-  }
+  // if (history.location.pathname !== loginPath) {
+  //   const currentUser = await fetchUserInfo()
+  //   return {
+  //     fetchUserInfo,
+  //     currentUser,
+  //     settings: defaultSettings,
+  //   }
+  // }
   return {
+    currentUser: { userid: '1', name: 'gsq', access: 'admin' },
     fetchUserInfo,
     settings: defaultSettings,
   }
@@ -54,12 +55,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: 'SUPCON',
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history
-      // 如果没有登录，重定向到 login
+      // 如果没有登录，重定向到 login（简易路由守卫）
       if (!initialState?.currentUser && location.pathname !== loginPath) history.push(loginPath)
     },
     // links: isDev
