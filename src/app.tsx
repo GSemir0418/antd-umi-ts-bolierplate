@@ -14,7 +14,7 @@ const loginPath = '/user/login'
 export const initialStateConfig = {
   loading: <PageLoading />,
 }
-
+// haha from lbq
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
