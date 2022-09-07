@@ -49,6 +49,12 @@
     component: './TestDva',
   },
   {
+    name: 'test-gantt',
+    icon: 'table',
+    path: '/test-gantt',
+    component: './Gantt',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
