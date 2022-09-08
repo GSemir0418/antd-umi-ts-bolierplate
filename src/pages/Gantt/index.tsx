@@ -1,5 +1,6 @@
 import type { Cell, CellView } from '@antv/x6'
 import { Graph } from '@antv/x6'
+import { Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import fakeData from './fakeData.json'
 import s from './Gantt.module.less'
@@ -9,6 +10,7 @@ import { registerNodes } from './registerNodes'
 const Gantt = () => {
   registerNodes()
   const [graph, setGraph] = useState<Graph>()
+  const [visible, setVisible] = useState<boolean>(false)
   const initGraph = () => {
     const g = new Graph({
       container: document.getElementById('container')!,
@@ -21,7 +23,7 @@ const Gantt = () => {
         pageWidth: 0,
         pageHeight: 0,
       },
-      //   autoResize: true,
+      autoResize: true,
       interacting: {
         nodeMovable: (cellView: CellView) => {
           const { cell } = cellView
@@ -80,6 +82,27 @@ const Gantt = () => {
       }),
     )
     graph.resetCells(cells)
+    const tooltip = document.querySelector('.x6-tooltip') as HTMLSpanElement
+    graph.on('node:mouseenter', ({ e, node, view }) => {
+      if (node.id.includes('n')) return
+      console.log(1111, tooltip)
+      console.log(e)
+      console.log(node)
+      console.log(view)
+      if (!tooltip) return
+      if (!visible) {
+        const p = graph.clientToGraph(e.clientX, e.clientY)
+        tooltip.style.display = 'block'
+        tooltip.style.position = 'absolute'
+        tooltip.style.left = `${p.x}px`
+        tooltip.style.top = `${p.y}px`
+        setVisible(true)
+      }
+    })
+    graph.on('node:mouseleave', ({ node }) => {
+      if (node.id.includes('n')) return
+      setVisible(false)
+    })
     // graph.centerContent()
     // graph.scaleContentToFit()
     // graph.zoomToFit({ padding: 10 })
@@ -88,6 +111,9 @@ const Gantt = () => {
 
   return (
     <div className={s.wrapper}>
+      <Tooltip title="111" visible={visible}>
+        <span className="x6-tooltip" />
+      </Tooltip>
       <div id="container" className={s.container} />
     </div>
   )

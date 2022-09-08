@@ -1,3 +1,4 @@
+import { columnWidth, rowHeight } from './generateConfig'
 import { Graph } from '@antv/x6'
 export const registerNodes = () => {
   // 列节点配置
@@ -26,8 +27,8 @@ export const registerNodes = () => {
           strokeWidth: 1,
         },
         'name-rect': {
-          width: 240,
-          height: 60,
+          width: columnWidth,
+          height: rowHeight,
           fill: '#5F95FF',
           stroke: '#fff',
           strokeWidth: 1,
@@ -73,8 +74,8 @@ export const registerNodes = () => {
           opacity: '.5',
         },
         'name-rect': {
-          width: 240,
-          height: 60,
+          width: columnWidth,
+          height: rowHeight,
           fill: '#5F95FF',
           stroke: '#fff',
           strokeWidth: 1,
@@ -98,8 +99,6 @@ export const registerNodes = () => {
     'lane-rect',
     {
       inherit: 'rect',
-      width: 100,
-      height: 60,
       attrs: {
         body: {
           strokeWidth: 1,

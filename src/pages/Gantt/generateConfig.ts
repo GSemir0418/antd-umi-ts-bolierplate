@@ -5,7 +5,7 @@ export const hours = () => {
   return t
 }
 export const rows = Array.from(new Set(fakeData.map(i => i.yy)))
-export const columnWidth = 240
+export const columnWidth = 120
 export const rowHeight = 60
 export const itemHeight = 40
 export const originTime = '2022-09-01 00:00:00'
