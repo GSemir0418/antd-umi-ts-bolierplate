@@ -1,7 +1,8 @@
 import type { Cell, CellView } from '@antv/x6'
 import { Graph } from '@antv/x6'
 import { Tooltip } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import ReactDOM from 'react-dom'
 import fakeData from './fakeData.json'
 import s from './Gantt.module.less'
 import { generateColumns, generateData, generateRows } from './generateConfig'
@@ -10,7 +11,8 @@ import { registerNodes } from './registerNodes'
 const Gantt = () => {
   registerNodes()
   const [graph, setGraph] = useState<Graph>()
-  const [visible, setVisible] = useState<boolean>(false)
+  const refKnob = useRef<HTMLDivElement>(null)
+  // const [visible, setVisible] = useState<boolean>(false)
   const initGraph = () => {
     const g = new Graph({
       container: document.getElementById('container')!,
@@ -60,6 +62,18 @@ const Gantt = () => {
   useEffect(() => {
     setGraph(initGraph)
   }, [])
+  const toggleTooltip = (visible: boolean) => {
+    if (!refKnob.current) return
+    ReactDOM.unmountComponentAtNode(refKnob.current)
+    if (visible) {
+      ReactDOM.render(
+        <Tooltip title={'111'} visible={true} destroyTooltipOnHide>
+          <div />
+        </Tooltip>,
+        refKnob.current,
+      )
+    }
+  }
   useEffect(() => {
     if (!graph) return
     const cells: Cell[] = []
@@ -82,26 +96,28 @@ const Gantt = () => {
       }),
     )
     graph.resetCells(cells)
-    const tooltip = document.querySelector('.x6-tooltip') as HTMLSpanElement
-    graph.on('node:mouseenter', ({ e, node, view }) => {
-      if (node.id.includes('n')) return
-      console.log(1111, tooltip)
-      console.log(e)
-      console.log(node)
-      console.log(view)
-      if (!tooltip) return
-      if (!visible) {
-        const p = graph.clientToGraph(e.clientX, e.clientY)
-        tooltip.style.display = 'block'
-        tooltip.style.position = 'absolute'
-        tooltip.style.left = `${p.x}px`
-        tooltip.style.top = `${p.y}px`
-        setVisible(true)
-      }
+    graph.on('node:mouseenter', ({ e, node }) => {
+      if (node.id.includes('n') || !refKnob.current) return
+      const p = graph.clientToGraph(e.clientX, e.clientY)
+      refKnob.current.style.display = 'block'
+      refKnob.current.style.position = 'absolute'
+      refKnob.current.style.left = `${p.x}px`
+      refKnob.current.style.top = `${p.y}px`
+      toggleTooltip(true)
     })
     graph.on('node:mouseleave', ({ node }) => {
-      if (node.id.includes('n')) return
-      setVisible(false)
+      if (node.id.includes('n') || !refKnob.current) return
+      refKnob.current.style.display = 'none'
+      refKnob.current.style.left = `-1000px`
+      refKnob.current.style.top = `-1000px`
+      toggleTooltip(false)
+    })
+    graph.on('node:mousemove', ({ node }) => {
+      if (node.id.includes('n') || !refKnob.current) return
+      refKnob.current.style.display = 'none'
+      refKnob.current.style.left = `-1000px`
+      refKnob.current.style.top = `-1000px`
+      toggleTooltip(false)
     })
     // graph.centerContent()
     // graph.scaleContentToFit()
@@ -111,9 +127,7 @@ const Gantt = () => {
 
   return (
     <div className={s.wrapper}>
-      <Tooltip title="111" visible={visible}>
-        <span className="x6-tooltip" />
-      </Tooltip>
+      <div style={{ position: 'absolute' }} ref={refKnob} />
       <div id="container" className={s.container} />
     </div>
   )

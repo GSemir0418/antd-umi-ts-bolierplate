@@ -36,7 +36,7 @@ export const generateColumns = () => {
 }
 export const generateRows = () => {
   return rows.map((item, index) => ({
-    id: `${index + 1}rn`,
+    id: `${item + 1}rn`,
     shape: 'lane-row',
     width: (hours.length + 1) * columnWidth,
     height: rowHeight,
