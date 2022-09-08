@@ -1,11 +1,11 @@
-import type { Cell, CellView } from '@antv/x6'
+import type { Cell, CellView, Node } from '@antv/x6'
 import { Graph } from '@antv/x6'
 import { Tooltip } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import fakeData from './fakeData.json'
 import s from './Gantt.module.less'
-import { generateColumns, generateData, generateRows } from './generateConfig'
+import { columnWidth, generateColumns, generateData, generateRows } from './generateConfig'
 
 import { registerNodes } from './registerNodes'
 const Gantt = () => {
@@ -38,24 +38,24 @@ const Gantt = () => {
       connecting: {
         router: 'orth',
       },
-      // translating: {
-      // restrict(cellView: CellView) {
-      //   const cell = cellView.cell as Node
-      //   const parentId = cell.prop('parent')
-      //   if (parentId) {
-      //     const parentNode = g.getCellById(parentId) as Node
-      //     if (parentNode) {
-      //       return parentNode.getBBox().moveAndExpand({
-      //         x: 0,
-      //         y: 30,
-      //         width: 0,
-      //         height: -30,
-      //       })
-      //     }
-      //   }
-      //   return cell.getBBox()
-      // },
-      //   },
+      translating: {
+        restrict(cellView: CellView) {
+          const cell = cellView.cell as Node
+          const parentId = cell.prop('parent')
+          if (parentId) {
+            const parentNode = g.getCellById(parentId) as Node
+            if (parentNode) {
+              return parentNode.getBBox().moveAndExpand({
+                x: columnWidth,
+                y: 10,
+                width: -columnWidth,
+                height: -20,
+              })
+            }
+          }
+          return cell.getBBox()
+        },
+      },
     })
     return g
   }
@@ -78,6 +78,7 @@ const Gantt = () => {
     if (!graph) return
     const cells: Cell[] = []
     const d = [...generateColumns(), ...generateRows(), ...generateData(fakeData)]
+    console.log(d)
     d.forEach((item: any) => {
       cells.push(graph.createNode(item))
     })

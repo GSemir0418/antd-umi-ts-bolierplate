@@ -38,7 +38,7 @@ export const generateRows = () => {
   return rows.map((item, index) => ({
     id: `${item + 1}rn`,
     shape: 'lane-row',
-    width: (hours.length + 1) * columnWidth,
+    width: (hours().length + 1) * columnWidth,
     height: rowHeight,
     position: {
       x: 0,
@@ -70,6 +70,7 @@ export const generateData = (data: any) => {
       y: yToPositionY(item.yy),
     }
     item.label = item.id
+    item.parent = `${item.yy + 1}rn`
     return item
   })
 }
