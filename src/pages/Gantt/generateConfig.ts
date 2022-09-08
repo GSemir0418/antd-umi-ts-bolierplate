@@ -4,9 +4,12 @@ export const hours = () => {
   for (let i = 1; i <= 24; i++) t.push(i)
   return t
 }
-export const rows = Array.from(new Set(fakeData.map(i => i.y)))
+export const rows = Array.from(new Set(fakeData.map(i => i.yy)))
 export const columnWidth = 240
 export const rowHeight = 60
+export const itemHeight = 40
+export const originTime = '2022-09-01 00:00:00'
+
 // const initData = {
 //   shape: 'lane-rect',
 //   width: 100,
@@ -41,28 +44,32 @@ export const generateRows = () => {
       x: 0,
       y: rowHeight + index * rowHeight,
     },
-    label: item,
+    label: index.toString(),
   }))
 }
-const timeToPositionX = (s?: string) => {
-  console.log(s)
-  return 0
+const minuteGap = (time1: string, time2: string) => {
+  return (new Date(time2).getTime() - new Date(time1).getTime()) / 60000
 }
-const timeToPositionY = (s?: string) => {
-  console.log(s)
-  return 0
+const minuteToPx = (minutes: number) => {
+  // 天模式下 1min = 4px
+  return minutes * (columnWidth / 60)
 }
-export const generateData = () => {
-  return fakeData.map((item: any) => {
+const timeToPositionX = (s: string) => {
+  return columnWidth + minuteToPx(minuteGap(originTime, s))
+}
+const yToPositionY = (y: number) => {
+  return rowHeight + (rowHeight - itemHeight) / 2 + y * rowHeight
+}
+export const generateData = (data: any) => {
+  return data.map((item: any) => {
     item.shape = 'lane-rect'
-    item.height = 40
-    item.width = (
-      new Date(item.scheduleEndDate).getTime() - new Date(item.scheduleStartDate).getTime()
-    ).toString()
+    item.height = itemHeight
+    item.width = minuteToPx(minuteGap(item.scheduleStartDate, item.scheduleEndDate))
     item.position = {
       x: timeToPositionX(item.scheduleStartDate),
-      y: timeToPositionY(item.scheduleEndDate),
+      y: yToPositionY(item.yy),
     }
     item.label = item.id
+    return item
   })
 }

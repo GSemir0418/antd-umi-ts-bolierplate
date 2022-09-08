@@ -1,9 +1,9 @@
 import type { Cell, CellView } from '@antv/x6'
 import { Graph } from '@antv/x6'
 import { useEffect, useState } from 'react'
-// import data from './data.jsonc'
+import fakeData from './fakeData.json'
 import s from './Gantt.module.less'
-import { generateColumns, generateRows } from './generateConfig'
+import { generateColumns, generateData, generateRows } from './generateConfig'
 
 import { registerNodes } from './registerNodes'
 const Gantt = () => {
@@ -14,8 +14,8 @@ const Gantt = () => {
       container: document.getElementById('container')!,
       scroller: {
         enabled: true,
-        minVisibleHeight: 500,
-        minVisibleWidth: 500,
+        // minVisibleHeight: 500,
+        // minVisibleWidth: 500,
         // autoResize: true,
         padding: 0,
         pageWidth: 0,
@@ -34,24 +34,24 @@ const Gantt = () => {
       connecting: {
         router: 'orth',
       },
-      translating: {
-        // restrict(cellView: CellView) {
-        //   const cell = cellView.cell as Node
-        //   const parentId = cell.prop('parent')
-        //   if (parentId) {
-        //     const parentNode = g.getCellById(parentId) as Node
-        //     if (parentNode) {
-        //       return parentNode.getBBox().moveAndExpand({
-        //         x: 0,
-        //         y: 30,
-        //         width: 0,
-        //         height: -30,
-        //       })
-        //     }
-        //   }
-        //   return cell.getBBox()
-        // },
-      },
+      // translating: {
+      // restrict(cellView: CellView) {
+      //   const cell = cellView.cell as Node
+      //   const parentId = cell.prop('parent')
+      //   if (parentId) {
+      //     const parentNode = g.getCellById(parentId) as Node
+      //     if (parentNode) {
+      //       return parentNode.getBBox().moveAndExpand({
+      //         x: 0,
+      //         y: 30,
+      //         width: 0,
+      //         height: -30,
+      //       })
+      //     }
+      //   }
+      //   return cell.getBBox()
+      // },
+      //   },
     })
     return g
   }
@@ -61,11 +61,24 @@ const Gantt = () => {
   useEffect(() => {
     if (!graph) return
     const cells: Cell[] = []
-    const d = [...generateColumns(), ...generateRows()]
+    const d = [...generateColumns(), ...generateRows(), ...generateData(fakeData)]
     d.forEach((item: any) => {
-      if (item.shape === 'lane-edge') cells.push(graph.createEdge(item))
-      else cells.push(graph.createNode(item))
+      cells.push(graph.createNode(item))
     })
+    cells.push(
+      graph.createNode({
+        id: '6',
+        shape: 'lane-rect',
+        width: 240,
+        height: 40,
+        position: {
+          x: 320,
+          y: 130,
+        },
+        label: 'Process',
+        parent: '2',
+      }),
+    )
     graph.resetCells(cells)
     // graph.centerContent()
     // graph.scaleContentToFit()
