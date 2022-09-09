@@ -1,3 +1,4 @@
+import { minuteGap, minuteToPx, timeToPositionX, yToPositionY } from './dataTransFormLib'
 import fakeData from './fakeData.json'
 export const hours = () => {
   const t = []
@@ -47,19 +48,7 @@ export const generateRows = () => {
     label: index.toString(),
   }))
 }
-const minuteGap = (time1: string, time2: string) => {
-  return (new Date(time2).getTime() - new Date(time1).getTime()) / 60000
-}
-const minuteToPx = (minutes: number) => {
-  // 天模式下 1min = 4px
-  return minutes * (columnWidth / 60)
-}
-const timeToPositionX = (s: string) => {
-  return columnWidth + minuteToPx(minuteGap(originTime, s))
-}
-const yToPositionY = (y: number) => {
-  return rowHeight + (rowHeight - itemHeight) / 2 + y * rowHeight
-}
+
 export const generateData = (data: any) => {
   return data.map((item: any) => {
     item.shape = 'lane-rect'

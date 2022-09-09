@@ -3,6 +3,7 @@ import { Graph } from '@antv/x6'
 import { Tooltip } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
+import { positionXTotime, pxToMillionSecond } from './dataTransFormLib'
 import fakeData from './fakeData.json'
 import s from './Gantt.module.less'
 import { columnWidth, generateColumns, generateData, generateRows } from './generateConfig'
@@ -16,6 +17,8 @@ const Gantt = () => {
   const initGraph = () => {
     const g = new Graph({
       container: document.getElementById('container')!,
+      // 标线
+      // snapline: true,
       scroller: {
         enabled: true,
         // minVisibleHeight: 500,
@@ -24,6 +27,9 @@ const Gantt = () => {
         padding: 0,
         pageWidth: 0,
         pageHeight: 0,
+        pageVisible: false,
+        pageBreak: false,
+        pannable: true,
       },
       autoResize: true,
       interacting: {
@@ -130,6 +136,20 @@ const Gantt = () => {
     <div className={s.wrapper}>
       <div style={{ position: 'absolute' }} ref={refKnob} />
       <div id="container" className={s.container} />
+      <div
+        onClick={() => {
+          const originResult = graph?.toJSON().cells
+          const result = originResult?.map(item => {
+            item.scheduleStartDate = positionXTotime(item.position.x)
+            item.scheduleEndDate =
+              positionXTotime(item.position.x) + pxToMillionSecond(item.size.width)
+            return !item.id?.includes('n') && item
+          })
+          console.log(result?.filter(i => i))
+        }}
+      >
+        111
+      </div>
     </div>
   )
 }
