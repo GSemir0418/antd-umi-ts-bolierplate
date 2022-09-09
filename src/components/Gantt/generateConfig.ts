@@ -1,13 +1,17 @@
 import { minuteGap, minuteToPx, timeToPositionX, yToPositionY } from './dataTransFormLib'
-import fakeData from './fakeData.json'
 
 /**
  * 默认配置
  */
-export const COLUMN_WIDTH = 120
+export let TIME_MODE: 'hour' | 'day' | 'week' | 'month' | 'year' = 'hour'
+export const COLUMN_WIDTH = (mode: typeof TIME_MODE) => {
+  console.log(mode)
+  if (mode === 'day') return 60
+  return 120
+}
 export const ROW_HEIGHT = 60
 export const ITEM_HEIGHT = 40
-export const ORIGIN_TIME = '2022-09-01 00:00:00'
+export let ORIGIN_TIME = '2022-09-01 00:00:00'
 
 /**
  * @desc 根据原始数据的yy字段生成行数组
@@ -21,9 +25,24 @@ export const ROWS = (data: any) => Array.from(new Set(data.map((i: any) => i.yy)
  * @params 用户选择的时间段
  * @returns 列数组
  */
-export const HOURS = () => {
-  const cols = []
-  for (let i = 1; i <= 24; i++) cols.push(i)
+export const COLS = (dateRange: string[]) => {
+  // TODO: 默认值再议
+  if (!dateRange) return []
+  console.log(dateRange)
+  const gapHours = minuteGap(dateRange[0], dateRange[1]) / 60
+  const cols: any[] = []
+  if (gapHours <= 24) {
+    TIME_MODE = 'hour'
+    // eslint-disable-next-line prefer-destructuring
+    for (let i = 1; i <= 24; i++) cols.push(`${i}:00`)
+    return cols
+  } else if (gapHours <= 28 * 24) {
+    // eslint-disable-next-line prefer-destructuring
+    ORIGIN_TIME = dateRange[0]
+    for (let i = 1; i <= 28; i++) cols.push(`${i}:00`)
+    TIME_MODE = 'day'
+    return cols
+  }
   return cols
 }
 
@@ -33,14 +52,14 @@ export const HOURS = () => {
  * @params 行数组
  * @returns 甘特图列配置
  */
-export const generateColumns = () => {
-  return HOURS().map((item, index) => ({
+export const generateColumns = (data: any, dateRange: string[]) => {
+  return COLS(dateRange).map((item, index) => ({
     id: `${index + 1}cn`,
     shape: 'lane-col',
-    width: COLUMN_WIDTH,
-    height: (ROWS(fakeData).length + 1) * ROW_HEIGHT,
+    width: COLUMN_WIDTH(TIME_MODE),
+    height: (ROWS(data).length + 1) * ROW_HEIGHT,
     position: {
-      x: COLUMN_WIDTH + index * COLUMN_WIDTH,
+      x: COLUMN_WIDTH(TIME_MODE) + index * COLUMN_WIDTH(TIME_MODE),
       y: 0,
     },
     label: item.toString(),
@@ -53,11 +72,11 @@ export const generateColumns = () => {
  * @params 行数组
  * @returns 甘特图行配置
  */
-export const generateRows = () => {
-  return ROWS(fakeData).map((item, index) => ({
+export const generateRows = (data: any, dateRange: string[]) => {
+  return ROWS(data).map((item, index) => ({
     id: `${(item as any) + 1}rn`,
     shape: 'lane-row',
-    width: (HOURS().length + 1) * COLUMN_WIDTH,
+    width: (COLS(dateRange).length + 1) * COLUMN_WIDTH(TIME_MODE),
     height: ROW_HEIGHT,
     position: {
       x: 0,

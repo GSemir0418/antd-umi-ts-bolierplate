@@ -1,4 +1,4 @@
-import { COLUMN_WIDTH, ITEM_HEIGHT, ORIGIN_TIME, ROW_HEIGHT } from './generateConfig'
+import { COLUMN_WIDTH, ITEM_HEIGHT, ORIGIN_TIME, ROW_HEIGHT, TIME_MODE } from './generateConfig'
 
 /**
  * @desc px 转换为 ms
@@ -16,7 +16,7 @@ export const pxToMillionSecond = (px: number) => {
  * @return 时间戳
  */
 export const positionXTotime = (x: number) => {
-  return new Date(ORIGIN_TIME).getTime() + pxToMillionSecond(x - COLUMN_WIDTH)
+  return new Date(ORIGIN_TIME).getTime() + pxToMillionSecond(x - COLUMN_WIDTH(TIME_MODE))
 }
 
 /**
@@ -26,7 +26,7 @@ export const positionXTotime = (x: number) => {
  */
 export const minuteToPx = (minutes: number) => {
   // 天模式下 1min = 4px
-  return minutes * (COLUMN_WIDTH / 60)
+  return minutes * (COLUMN_WIDTH(TIME_MODE) / 60)
 }
 
 /**
@@ -45,7 +45,7 @@ export const minuteGap = (time1: string, time2: string) => {
  * @return x坐标（px）
  */
 export const timeToPositionX = (s: string) => {
-  return COLUMN_WIDTH + minuteToPx(minuteGap(ORIGIN_TIME, s))
+  return COLUMN_WIDTH(TIME_MODE) + minuteToPx(minuteGap(ORIGIN_TIME, s))
 }
 
 /**

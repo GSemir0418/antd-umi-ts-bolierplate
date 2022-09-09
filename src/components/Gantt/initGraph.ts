@@ -1,7 +1,7 @@
 import { registerNodes } from './registerNodes'
 import type { CellView, Node } from '@antv/x6'
 import { Graph } from '@antv/x6'
-import { COLUMN_WIDTH } from './generateConfig'
+import { COLUMN_WIDTH, TIME_MODE } from './generateConfig'
 
 export const initGraph = () => {
   // 注册自定义图元
@@ -37,6 +37,7 @@ export const initGraph = () => {
       router: 'orth',
     },
     translating: {
+      // 限制拖动范围
       restrict(cellView: CellView) {
         const cell = cellView.cell as Node
         const parentId = cell.prop('parent')
@@ -44,9 +45,9 @@ export const initGraph = () => {
           const parentNode = g.getCellById(parentId) as Node
           if (parentNode) {
             return parentNode.getBBox().moveAndExpand({
-              x: COLUMN_WIDTH,
+              x: COLUMN_WIDTH(TIME_MODE),
               y: 10,
-              width: -COLUMN_WIDTH,
+              width: -COLUMN_WIDTH(TIME_MODE),
               height: -20,
             })
           }

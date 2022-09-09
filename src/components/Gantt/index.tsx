@@ -4,11 +4,11 @@ import { Tooltip } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { positionXTotime, pxToMillionSecond } from './dataTransFormLib'
-import fakeData from './fakeData.json'
 import s from './Gantt.module.less'
 import { generateColumns, generateData, generateRows } from './generateConfig'
 import { initGraph } from './initGraph'
-const Gantt = () => {
+const Gantt = (props: any) => {
+  const { dateRange, data } = props
   const [graph, setGraph] = useState<Graph>()
   // 暂时没用
   const refKnob = useRef<HTMLDivElement>(null)
@@ -33,7 +33,11 @@ const Gantt = () => {
   useEffect(() => {
     if (!graph) return
     const cells: Cell[] = []
-    const d = [...generateColumns(), ...generateRows(), ...generateData(fakeData)]
+    const d = [
+      ...generateColumns(data, dateRange),
+      ...generateRows(data, dateRange),
+      ...generateData(data),
+    ]
     console.log(d)
     d.forEach((item: any) => {
       cells.push(graph.createNode(item))
@@ -66,7 +70,7 @@ const Gantt = () => {
     // graph.scaleContentToFit()
     // graph.zoomToFit({ padding: 10 })
     // graph.zoom(0.2)
-  }, [graph])
+  }, [data, dateRange, graph])
 
   return (
     <div className={s.wrapper}>
