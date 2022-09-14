@@ -24,6 +24,7 @@ export const registerNodes = (mode: TIME_MODE) => {
       attrs: {
         body: {
           fill: '#FFF',
+          // 边框颜色
           stroke: '#5F95FF',
           strokeWidth: 1,
         },
@@ -104,7 +105,7 @@ export const registerNodes = (mode: TIME_MODE) => {
         body: {
           strokeWidth: 1,
           stroke: '#5F95FF',
-          fill: '#EFF4FF',
+          // fill: '#EFF4FF',
         },
         text: {
           fontSize: 12,

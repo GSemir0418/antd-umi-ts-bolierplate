@@ -3,24 +3,28 @@
     "id": "1001",
     "scheduleStartDate": "2022-09-14 01:00:00",
     "scheduleEndDate": "2022-09-14 06:00:00",
+    "color": "red",
     "yy": 0
   },
   {
     "id": "1002",
     "scheduleStartDate": "2022-09-14 07:00:00",
     "scheduleEndDate": "2022-09-14 15:00:00",
+    "color": "green",
     "yy": 0
   },
   {
     "id": "1003",
     "scheduleStartDate": "2022-09-14 07:00:00",
     "scheduleEndDate": "2022-09-14 17:00:00",
+    "color": "blue",
     "yy": 1
   },
   {
     "id": "1004",
     "scheduleStartDate": "2022-09-14 06:00:00",
     "scheduleEndDate": "2022-09-14 18:00:00",
+    "color": "yellow",
     "yy": 2
   }
 ]

@@ -102,6 +102,11 @@ export const generateData = (data: any, mode: TIME_MODE) => {
   if (mode === 'hour') {
     return data.map((item: any) => {
       item.shape = 'lane-rect'
+      item.attrs = {
+        body: {
+          fill: item.color,
+        },
+      }
       item.height = ITEM_HEIGHT
       item.width = minuteToPx(minuteGap(item.scheduleStartDate, item.scheduleEndDate), mode)
       item.position = {
@@ -116,6 +121,11 @@ export const generateData = (data: any, mode: TIME_MODE) => {
     return data.map((item: any) => {
       item.shape = 'lane-rect'
       item.height = ITEM_HEIGHT
+      item.attrs = {
+        body: {
+          fill: item.color,
+        },
+      }
       item.width = minuteToPx(minuteGap(item.scheduleStartDate, item.scheduleEndDate), mode)
       item.position = {
         x: timeToPositionX(item.scheduleStartDate, mode),

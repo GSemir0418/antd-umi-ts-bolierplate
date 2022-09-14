@@ -14,8 +14,6 @@ const Gantt = () => {
   const [graph, setGraph] = useState<Graph>()
   const [dateRange, setDateRange] = useState<string[]>()
   const formRef = useRef<ProFormInstance<Record<string, any>> | undefined>()
-  // 暂时没用
-  // const refKnob = useRef<HTMLDivElement>(null)
   // 开局赋值
   useEffect(() => {
     formRef.current?.submit()

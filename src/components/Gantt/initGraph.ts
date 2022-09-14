@@ -13,6 +13,8 @@ export const initGraph = (mode: TIME_MODE) => {
     container: document.getElementById('container')!,
     // 标线
     // snapline: true,
+    // 最小移动距离
+    grid: 5,
     // @ts-ignore-next-line
     height: '100%',
     scroller: {
