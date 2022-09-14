@@ -1,29 +1,31 @@
 import { registerNodes } from './registerNodes'
 import type { CellView, Node } from '@antv/x6'
 import { Graph } from '@antv/x6'
-import { COLUMN_WIDTH, TIME_MODE } from './generateConfig'
+import type { TIME_MODE } from './generateConfig'
+import { COLUMN_WIDTH } from './generateConfig'
+import './Gantt.module.less'
 
-export const initGraph = () => {
+export const initGraph = (mode: TIME_MODE) => {
   // 注册自定义图元
-  registerNodes()
+  registerNodes(mode)
   // 初始化画布
   const g = new Graph({
     container: document.getElementById('container')!,
     // 标线
     // snapline: true,
+    // @ts-ignore-next-line
+    height: '100%',
     scroller: {
       enabled: true,
-      // minVisibleHeight: 500,
-      // minVisibleWidth: 500,
       // autoResize: true,
+      // 画布范围限制
       padding: 0,
       pageWidth: 0,
-      pageHeight: 0,
-      pageVisible: false,
-      pageBreak: false,
+      minVisibleWidth: 0,
+      minVisibleHeight: 0,
       pannable: true,
     },
-    autoResize: true,
+    // autoResize: true,
     interacting: {
       nodeMovable: (cellView: CellView) => {
         const { cell } = cellView
@@ -45,9 +47,9 @@ export const initGraph = () => {
           const parentNode = g.getCellById(parentId) as Node
           if (parentNode) {
             return parentNode.getBBox().moveAndExpand({
-              x: COLUMN_WIDTH(TIME_MODE),
+              x: COLUMN_WIDTH(mode),
               y: 10,
-              width: -COLUMN_WIDTH(TIME_MODE),
+              width: -COLUMN_WIDTH(mode),
               height: -20,
             })
           }

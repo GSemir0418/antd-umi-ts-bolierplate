@@ -1,6 +1,7 @@
+import type { TIME_MODE } from './generateConfig'
 import { COLUMN_WIDTH, ROW_HEIGHT } from './generateConfig'
 import { Graph } from '@antv/x6'
-export const registerNodes = () => {
+export const registerNodes = (mode: TIME_MODE) => {
   // 列节点配置
   Graph.registerNode(
     'lane-col',
@@ -27,7 +28,7 @@ export const registerNodes = () => {
           strokeWidth: 1,
         },
         'name-rect': {
-          width: COLUMN_WIDTH,
+          width: COLUMN_WIDTH(mode),
           height: ROW_HEIGHT,
           fill: '#5F95FF',
           stroke: '#fff',
@@ -74,7 +75,7 @@ export const registerNodes = () => {
           opacity: '.5',
         },
         'name-rect': {
-          width: COLUMN_WIDTH,
+          width: COLUMN_WIDTH(mode),
           height: ROW_HEIGHT,
           fill: '#5F95FF',
           stroke: '#fff',

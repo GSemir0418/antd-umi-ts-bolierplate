@@ -1,4 +1,5 @@
-import { COLUMN_WIDTH, ITEM_HEIGHT, ORIGIN_TIME, ROW_HEIGHT, TIME_MODE } from './generateConfig'
+import type { TIME_MODE } from './generateConfig'
+import { COLUMN_WIDTH, ITEM_HEIGHT, ORIGIN_TIME, ROW_HEIGHT } from './generateConfig'
 
 /**
  * @desc px 转换为 ms
@@ -15,8 +16,8 @@ export const pxToMillionSecond = (px: number) => {
  * @params 图元x坐标
  * @return 时间戳
  */
-export const positionXTotime = (x: number) => {
-  return new Date(ORIGIN_TIME).getTime() + pxToMillionSecond(x - COLUMN_WIDTH(TIME_MODE))
+export const positionXTotime = (x: number, mode: TIME_MODE) => {
+  return new Date(ORIGIN_TIME).getTime() + pxToMillionSecond(x - COLUMN_WIDTH(mode))
 }
 
 /**
@@ -24,9 +25,14 @@ export const positionXTotime = (x: number) => {
  * @params 分钟
  * @return 像素尺寸
  */
-export const minuteToPx = (minutes: number) => {
-  // 天模式下 1min = 4px
-  return minutes * (COLUMN_WIDTH(TIME_MODE) / 60)
+export const minuteToPx = (minutes: number, mode: TIME_MODE) => {
+  if (mode === 'hour') {
+    // hour模式下 1min = 2px
+    return minutes * (COLUMN_WIDTH(mode) / 60)
+  } else {
+    // day模式下 1min = 1/24px
+    return minutes * (COLUMN_WIDTH(mode) / 60 / 24)
+  }
 }
 
 /**
@@ -44,8 +50,8 @@ export const minuteGap = (time1: string, time2: string) => {
  * @params 排产开始时间
  * @return x坐标（px）
  */
-export const timeToPositionX = (s: string) => {
-  return COLUMN_WIDTH(TIME_MODE) + minuteToPx(minuteGap(ORIGIN_TIME, s))
+export const timeToPositionX = (s: string, mode: TIME_MODE) => {
+  return COLUMN_WIDTH(mode) + minuteToPx(minuteGap(ORIGIN_TIME, s), mode)
 }
 
 /**
@@ -62,4 +68,31 @@ export const yToPositionY = (y: number) => {
  */
 export const timeFormat = (t: number) => {
   return new Date(t)
+}
+
+/**
+ * @desc 根据所选时间范围生成列
+ * @params 时间模式
+ * @params 初始时间
+ * @return 列数组
+ */
+export const generateCol = (mode: string, initDate: string, endDate?: string) => {
+  const result = [`${new Date(initDate).getMonth() + 1} / ${new Date(initDate).getDate()}`]
+  let nextDay: string | number = initDate
+  if (mode === 'default') {
+    for (let i = 1; i <= 31; i++) {
+      nextDay = new Date(nextDay).getTime() + 1000 * 60 * 60 * 24
+      result.push(`${new Date(nextDay).getMonth() + 1} / ${new Date(nextDay).getDate()}`)
+    }
+    return result
+  } else if (mode.includes('day')) {
+    const dayGap =
+      (new Date(endDate!).getTime() - new Date(initDate).getTime()) / 1000 / 60 / 60 / 24
+    for (let i = 1; i <= dayGap; i++) {
+      nextDay = new Date(nextDay).getTime() + 1000 * 60 * 60 * 24
+      result.push(`${new Date(nextDay).getMonth() + 1} / ${new Date(nextDay).getDate()}`)
+    }
+    return result
+  }
+  return result
 }
