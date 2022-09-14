@@ -119,6 +119,16 @@ export const generateData = (data: any, mode: TIME_MODE) => {
     })
   } else {
     return data.map((item: any) => {
+      item.tools = [
+        {
+          name: 'tooltip',
+          args: {
+            tooltip: item.id,
+            startTime: item.scheduleStartDate,
+            endTime: item.scheduleEndDate,
+          },
+        },
+      ]
       item.shape = 'lane-rect'
       item.height = ITEM_HEIGHT
       item.attrs = {

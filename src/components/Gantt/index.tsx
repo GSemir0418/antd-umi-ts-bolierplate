@@ -43,15 +43,27 @@ const Gantt = () => {
   useEffect(() => {
     if (!graph || !data) return
     const cells: Cell[] = []
-    const d = [
+    Array.from([
       ...generateColumns(data, dateRange, timeMode),
       ...generateRows(data, dateRange, timeMode),
       ...generateData(data, timeMode),
-    ]
-    d.forEach((item: any) => {
+    ]).forEach((item: any) => {
       cells.push(graph.createNode(item))
     })
     graph.resetCells(cells)
+    // 更新tooltip展示
+    graph.on('node:mouseup', ({ node }) => {
+      if (node.id.includes('n')) return
+      if (node.hasTool('tooltip')) node.removeTool('tooltip')
+      node.addTools([
+        {
+          name: 'tooltip',
+          args: {
+            tooltip: '111',
+          },
+        },
+      ])
+    })
     // graph.on('node:mouseenter', ({ e, node }) => {
     //   if (node.id.includes('n') || !refKnob.current) return
     //   const p = graph.clientToGraph(e.clientX, e.clientY)

@@ -1,6 +1,7 @@
 import type { TIME_MODE } from './generateConfig'
 import { COLUMN_WIDTH, ROW_HEIGHT } from './generateConfig'
 import { Graph } from '@antv/x6'
+import { TooltipTool } from './Tooltip'
 export const registerNodes = (mode: TIME_MODE) => {
   // 列节点配置
   Graph.registerNode(
@@ -96,6 +97,8 @@ export const registerNodes = (mode: TIME_MODE) => {
     },
     true,
   )
+  // 注册tooltip节点工具
+  Graph.registerNodeTool('tooltip', TooltipTool, true)
   // 图元节点配置
   Graph.registerNode(
     'lane-rect',
@@ -112,6 +115,14 @@ export const registerNodes = (mode: TIME_MODE) => {
           fill: '#262626',
         },
       },
+      // tools: [
+      //   {
+      //     name: 'tooltip',
+      //     args: {
+      //       tooltip: 'ToolTip Content',
+      //     },
+      //   },
+      // ],
     },
     true,
   )
