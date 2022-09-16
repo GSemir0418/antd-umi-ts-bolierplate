@@ -26,8 +26,8 @@ export const positionXTotime = (x: number, mode: TIME_MODE) => {
  * @return 像素尺寸
  */
 export const minuteToPx = (minutes: number, mode: TIME_MODE) => {
-  if (mode === 'hour') {
-    // hour模式下 1min = 2px
+  if (mode === 'hour' || mode === 'day120') {
+    // hour|'day120'模式下 1min = 2px
     return minutes * (COLUMN_WIDTH(mode) / 60)
   } else {
     // day模式下 1min = 1/24px
