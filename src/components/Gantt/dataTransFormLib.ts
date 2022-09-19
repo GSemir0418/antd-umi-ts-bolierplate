@@ -6,9 +6,9 @@ import { COLUMN_WIDTH, ITEM_HEIGHT, ORIGIN_TIME, ROW_HEIGHT } from './generateCo
  * @params 图元宽度（差）px
  * @return ms
  */
-export const pxToMillionSecond = (px: number) => {
-  // 天模式下 1px = 0.25mins = 0.25 * 60 * 1000 = 15000
-  return px * 15000
+export const pxToMillionSecond = (px: number, mode: TIME_MODE) => {
+  if (mode === 'hour') return px * ((60 * 60 * 1000) / COLUMN_WIDTH(mode))
+  else return px * ((24 * 60 * 60 * 1000) / COLUMN_WIDTH(mode))
 }
 
 /**
@@ -17,13 +17,13 @@ export const pxToMillionSecond = (px: number) => {
  * @return 时间戳
  */
 export const positionXTotime = (x: number, mode: TIME_MODE) => {
-  return new Date(ORIGIN_TIME).getTime() + pxToMillionSecond(x - COLUMN_WIDTH(mode))
+  return new Date(ORIGIN_TIME).getTime() + pxToMillionSecond(x - COLUMN_WIDTH(mode), mode)
 }
 
 /**
  * @desc 分钟转换为像素(宽度)
  * @params 分钟
- * @return 像素尺寸
+ * @return px
  */
 export const minuteToPx = (minutes: number, mode: TIME_MODE) => {
   if (mode === 'hour') {
@@ -53,7 +53,6 @@ export const minuteGap = (time1: string, time2: string): number => {
  * @return x坐标（px）
  */
 export const timeToPositionX = (s: string, mode: TIME_MODE) => {
-  console.log(ORIGIN_TIME, s)
   // 加八小时时差
   return COLUMN_WIDTH(mode) + minuteToPx(8 * 60, mode) + minuteToPx(minuteGap(ORIGIN_TIME, s), mode)
 }

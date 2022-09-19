@@ -52,11 +52,9 @@ const Gantt = () => {
     ]).forEach((item: any) => {
       cells.push(graph.createNode(item))
     })
-    console.log([...generateData(data, timeMode)])
     graph.resetCells(cells)
     // 更新tooltip展示
     graph.on('node:mouseup', props => {
-      console.log(props)
       const { node } = props
       if (node.id.includes('n')) return
       if (node.hasTool('tooltip')) node.removeTool('tooltip')
@@ -64,7 +62,12 @@ const Gantt = () => {
         {
           name: 'tooltip',
           args: {
-            tooltip: '111',
+            tooltip: node.id,
+            startTime: new Date(positionXTotime(node.position().x, timeMode)).toISOString(),
+            endTime: new Date(
+              new Date(positionXTotime(node.position().x, timeMode)).getTime() +
+                pxToMillionSecond(node.getSize().width, timeMode),
+            ).toISOString(),
           },
         },
       ])
@@ -97,8 +100,8 @@ const Gantt = () => {
           const originResult = graph?.toJSON().cells
           const result = originResult?.map(item => {
             item.scheduleStartDate = positionXTotime(item.position.x, timeMode)
-            item.scheduleEndDate =
-              positionXTotime(item.position.x, timeMode) + pxToMillionSecond(item.size.width)
+            // item.scheduleEndDate =
+            // positionXTotime(item.position.x, timeMode) + pxToMillionSecond(item.size.width)
             return !item.id?.includes('n') && item
           })
           // eslint-disable-next-line
