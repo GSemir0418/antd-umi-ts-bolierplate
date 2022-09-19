@@ -21,16 +21,18 @@ export const positionXTotime = (x: number, mode: TIME_MODE) => {
 }
 
 /**
- * @desc 分钟转换为像素
+ * @desc 分钟转换为像素(宽度)
  * @params 分钟
  * @return 像素尺寸
  */
 export const minuteToPx = (minutes: number, mode: TIME_MODE) => {
-  if (mode === 'hour' || mode === 'day120') {
-    // hour|'day120'模式下 1min = 2px
+  if (mode === 'hour') {
+    // hour模式 1min = 2px
     return minutes * (COLUMN_WIDTH(mode) / 60)
   } else {
-    // day模式下 1min = 1/24px
+    // day/default模式 1min = 1 / 24px
+    // day120模式 1min = 1 / 12px
+    // day240模式 1min = 1 / 6px
     return minutes * (COLUMN_WIDTH(mode) / 60 / 24)
   }
 }
@@ -41,17 +43,19 @@ export const minuteToPx = (minutes: number, mode: TIME_MODE) => {
  * @params 排产结束时间 time2
  * @return 时间差（分钟）
  */
-export const minuteGap = (time1: string, time2: string) => {
+export const minuteGap = (time1: string, time2: string): number => {
   return (new Date(time2).getTime() - new Date(time1).getTime()) / 60000
 }
 
 /**
- * @desc 图元初始位置x坐标的计算
+ * @desc 图元初始位置x坐标的计算(时差转换)
  * @params 排产开始时间
  * @return x坐标（px）
  */
 export const timeToPositionX = (s: string, mode: TIME_MODE) => {
-  return COLUMN_WIDTH(mode) + minuteToPx(minuteGap(ORIGIN_TIME, s), mode)
+  console.log(ORIGIN_TIME, s)
+  // 加八小时时差
+  return COLUMN_WIDTH(mode) + minuteToPx(8 * 60, mode) + minuteToPx(minuteGap(ORIGIN_TIME, s), mode)
 }
 
 /**

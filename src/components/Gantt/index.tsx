@@ -25,6 +25,8 @@ const Gantt = () => {
     const gapHours = minuteGap(dateRange[0], dateRange[1]) / 60
     // 如果小于或等于24小时，默认显示24小时
     if (gapHours <= 24) return 'hour'
+    // 如果大于24小时，但小于5天，以天240px显示
+    else if (gapHours <= 5 * 24) return 'day240'
     // 如果大于24小时，但小于12天，以天120px显示
     else if (gapHours <= 12 * 24) return 'day120'
     else return 'day'
@@ -50,9 +52,12 @@ const Gantt = () => {
     ]).forEach((item: any) => {
       cells.push(graph.createNode(item))
     })
+    console.log([...generateData(data, timeMode)])
     graph.resetCells(cells)
     // 更新tooltip展示
-    graph.on('node:mouseup', ({ node }) => {
+    graph.on('node:mouseup', props => {
+      console.log(props)
+      const { node } = props
       if (node.id.includes('n')) return
       if (node.hasTool('tooltip')) node.removeTool('tooltip')
       node.addTools([
@@ -64,29 +69,7 @@ const Gantt = () => {
         },
       ])
     })
-    // graph.on('node:mouseenter', ({ e, node }) => {
-    //   if (node.id.includes('n') || !refKnob.current) return
-    //   const p = graph.clientToGraph(e.clientX, e.clientY)
-    //   refKnob.current.style.display = 'block'
-    //   refKnob.current.style.position = 'absolute'
-    //   refKnob.current.style.left = `${p.x}px`
-    //   refKnob.current.style.top = `${p.y}px`
-    //   toggleTooltip(true)
-    // })
-    // graph.on('node:mouseleave', ({ node }) => {
-    //   if (node.id.includes('n') || !refKnob.current) return
-    //   refKnob.current.style.display = 'none'
-    //   refKnob.current.style.left = `-1000px`
-    //   refKnob.current.style.top = `-1000px`
-    //   toggleTooltip(false)
-    // })
-    // graph.on('node:mousemove', ({ node }) => {
-    //   if (node.id.includes('n') || !refKnob.current) return
-    //   refKnob.current.style.display = 'none'
-    //   refKnob.current.style.left = `-1000px`
-    //   refKnob.current.style.top = `-1000px`
-    //   toggleTooltip(false)
-    // })
+
     // graph.centerContent()
     // graph.scaleContentToFit()
     // graph.zoomToFit({ padding: 10 })
