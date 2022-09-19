@@ -14,7 +14,7 @@ export const initGraph = (mode: TIME_MODE) => {
     // 标线
     // snapline: true,
     // 最小移动距离
-    grid: 5,
+    grid: 1,
     // @ts-ignore-next-line
     height: '100%',
     scroller: {

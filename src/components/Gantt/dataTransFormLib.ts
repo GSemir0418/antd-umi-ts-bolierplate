@@ -67,10 +67,19 @@ export const yToPositionY = (y: number) => {
 }
 
 /**
- * @desc 暂时没用
+ * @desc 时间格式转换：ISO => string
+ * @params ISOString or TimeStamp
+ * @return '2022-09-09 00:00:00'
  */
-export const timeFormat = (t: number) => {
-  return new Date(t)
+export const timeFormat = (t: number | string | Date) => {
+  const d = new Date(new Date(t).getTime() - 8 * 1000 * 60 * 60)
+  const year = d.getFullYear()
+  const month = d.getMonth() + 1 >= 10 ? d.getMonth() + 1 : `0${d.getMonth() + 1}`
+  const date = d.getDate() >= 10 ? d.getDate() : `0${d.getDate()}`
+  const hour = d.getHours() >= 10 ? d.getHours() : `0${d.getHours()}`
+  const minute = d.getMinutes() >= 10 ? d.getMinutes() : `0${d.getMinutes()}`
+  const second = d.getSeconds() >= 10 ? d.getSeconds() : `0${d.getSeconds()}`
+  return `${year}-${month}-${date} ${hour}:${minute}:${second}`
 }
 
 /**

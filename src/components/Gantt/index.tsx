@@ -1,9 +1,8 @@
 import type { ProFormInstance } from '@ant-design/pro-components'
 import { ProFormDateRangePicker, QueryFilter } from '@ant-design/pro-components'
-import type { Cell } from '@antv/x6'
-import type { Graph } from '@antv/x6'
+import type { Cell, Graph } from '@antv/x6'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { minuteGap, positionXTotime, pxToMillionSecond } from './dataTransFormLib'
+import { minuteGap, positionXTotime, pxToMillionSecond, timeFormat } from './dataTransFormLib'
 import s from './Gantt.module.less'
 import { generateColumns, generateData, generateRows } from './generateConfig'
 import { initGraph } from './initGraph'
@@ -58,16 +57,18 @@ const Gantt = () => {
       const { node } = props
       if (node.id.includes('n')) return
       if (node.hasTool('tooltip')) node.removeTool('tooltip')
+      const nodeStartTime = new Date(positionXTotime(node.position().x, timeMode)).toISOString()
+      const nodeEndTime = new Date(
+        new Date(positionXTotime(node.position().x, timeMode)).getTime() +
+          pxToMillionSecond(node.getSize().width, timeMode),
+      ).toISOString()
       node.addTools([
         {
           name: 'tooltip',
           args: {
             tooltip: node.id,
-            startTime: new Date(positionXTotime(node.position().x, timeMode)).toISOString(),
-            endTime: new Date(
-              new Date(positionXTotime(node.position().x, timeMode)).getTime() +
-                pxToMillionSecond(node.getSize().width, timeMode),
-            ).toISOString(),
+            startTime: timeFormat(nodeStartTime),
+            endTime: timeFormat(nodeEndTime),
           },
         },
       ])
