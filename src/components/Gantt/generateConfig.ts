@@ -109,10 +109,11 @@ export const generateRows = (data: any, dateRange: string[] | undefined, mode: T
  */
 export const generateData = (data: any, mode: TIME_MODE) => {
   return data.map((item: any) => {
+    item.id = item.id.toString()
     item.shape = 'lane-rect'
     item.attrs = {
       body: {
-        fill: item.color,
+        fill: item.specifications,
       },
     }
     item.height = ITEM_HEIGHT
@@ -121,7 +122,7 @@ export const generateData = (data: any, mode: TIME_MODE) => {
       x: timeToPositionX(item.scheduleStartDate, mode),
       y: yToPositionY(item.yy),
     }
-    item.label = item.id
+    item.label = item.materialCode
     item.parent = `${item.yy + 1}rn`
     item.tools = [
       {
@@ -130,6 +131,9 @@ export const generateData = (data: any, mode: TIME_MODE) => {
           tooltip: item.id,
           startTime: item.scheduleStartDate,
           endTime: item.scheduleEndDate,
+          materialName: item.materialName,
+          remark: item.remark1,
+          scheduleNum: item.scheduleNum,
         },
       },
     ]

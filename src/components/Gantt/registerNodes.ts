@@ -106,23 +106,17 @@ export const registerNodes = (mode: TIME_MODE) => {
       inherit: 'rect',
       attrs: {
         body: {
+          rx: 10,
+          ry: 10,
           strokeWidth: 1,
-          stroke: '#5F95FF',
+          stroke: 'white',
           // fill: '#EFF4FF',
         },
         text: {
           fontSize: 12,
-          fill: '#262626',
+          fill: 'white',
         },
       },
-      // tools: [
-      //   {
-      //     name: 'tooltip',
-      //     args: {
-      //       tooltip: 'ToolTip Content',
-      //     },
-      //   },
-      // ],
     },
     true,
   )
