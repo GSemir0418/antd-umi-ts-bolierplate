@@ -24,10 +24,26 @@ export let ORIGIN_TIME = `${new Date().getFullYear()}-${
 
 /**
  * @desc 根据原始数据的yy字段生成行数组
+ * @desc 包括equipName等字段
  * @params 原始数据
- * @return 行数组
+ * @return 去重后的行数组 { yy: number; equipName: string | null }[]
  */
-export const ROWS = (data: any) => Array.from(new Set(data.map((i: any) => i.yy)))
+export const ROWS = (data: any[]) => {
+  const newArr: { yy: number; equipName: string | null }[] = []
+  data
+    .map((item: any) => {
+      return { yy: item.yy, equipName: item.equipName }
+    })
+    // 对象数组去重
+    .reduce((prev, cur) => {
+      if (!prev.includes(cur.yy as never)) {
+        prev.push(cur.yy as never)
+        newArr.push(cur)
+      }
+      return prev
+    }, [])
+  return newArr
+}
 
 /**
  * @desc 根据用户选择的时间段返回不同的列数
@@ -90,7 +106,7 @@ export const generateColumns = (data: any, dateRange: string[] | undefined, mode
  */
 export const generateRows = (data: any, dateRange: string[] | undefined, mode: TIME_MODE) => {
   return ROWS(data).map((item, index) => ({
-    id: `${(item as any) + 1}rn`,
+    id: `${index + 1}rn`,
     shape: 'lane-row',
     width: (COLS(dateRange, mode).length + 1) * COLUMN_WIDTH(mode),
     height: ROW_HEIGHT,
@@ -98,7 +114,7 @@ export const generateRows = (data: any, dateRange: string[] | undefined, mode: T
       x: 0,
       y: ROW_HEIGHT + index * ROW_HEIGHT,
     },
-    label: index.toString(),
+    label: item.equipName,
   }))
 }
 
