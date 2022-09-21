@@ -1,4 +1,5 @@
 import type { TIME_MODE } from './generateConfig'
+import { TABLE_WIDTH } from './generateConfig'
 import { COLUMN_WIDTH, ITEM_HEIGHT, ORIGIN_TIME, ROW_HEIGHT } from './generateConfig'
 
 /**
@@ -54,7 +55,7 @@ export const minuteGap = (time1: string, time2: string): number => {
  */
 export const timeToPositionX = (s: string, mode: TIME_MODE) => {
   // 加八小时时差
-  return COLUMN_WIDTH(mode) + minuteToPx(8 * 60, mode) + minuteToPx(minuteGap(ORIGIN_TIME, s), mode)
+  return TABLE_WIDTH * 3 + minuteToPx(8 * 60, mode) + minuteToPx(minuteGap(ORIGIN_TIME, s), mode)
 }
 
 /**

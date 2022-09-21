@@ -2,7 +2,7 @@ import { registerNodes } from './registerNodes'
 import type { CellView, Node } from '@antv/x6'
 import { Graph } from '@antv/x6'
 import type { TIME_MODE } from './generateConfig'
-import { COLUMN_WIDTH } from './generateConfig'
+import { TABLE_WIDTH } from './generateConfig'
 import './Gantt.module.less'
 
 export const initGraph = (mode: TIME_MODE) => {
@@ -49,9 +49,9 @@ export const initGraph = (mode: TIME_MODE) => {
           const parentNode = g.getCellById(parentId) as Node
           if (parentNode) {
             return parentNode.getBBox().moveAndExpand({
-              x: COLUMN_WIDTH(mode),
+              x: TABLE_WIDTH,
               y: 10,
-              width: -COLUMN_WIDTH(mode),
+              width: -TABLE_WIDTH,
               height: -20,
             })
           }

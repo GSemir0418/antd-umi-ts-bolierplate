@@ -15,6 +15,7 @@ export const COLUMN_WIDTH = (mode: TIME_MODE) => {
   else if (mode === 'day240') return 240
   else return 60
 }
+export const TABLE_WIDTH = 200
 export const ROW_HEIGHT = 60
 export const ITEM_HEIGHT = 40
 // 2022-9-19与2022-09-19是不同的
@@ -28,11 +29,22 @@ export let ORIGIN_TIME = `${new Date().getFullYear()}-${
  * @params 原始数据
  * @return 去重后的行数组 { yy: number; equipName: string | null }[]
  */
+type ROWS_TYPE = {
+  yy: number
+  equipName: string | null
+  deviceName: string | null
+  soipLevel2: string | null
+}[]
 export const ROWS = (data: any[]) => {
-  const newArr: { yy: number; equipName: string | null }[] = []
+  const newArr: ROWS_TYPE = []
   data
     .map((item: any) => {
-      return { yy: item.yy, equipName: item.equipName }
+      return {
+        yy: item.yy,
+        equipName: item.equipName,
+        soipLevel2: item.soipLevel2,
+        deviceName: item.soipLevel2,
+      }
     })
     // 对象数组去重
     .reduce((prev, cur) => {
@@ -91,7 +103,7 @@ export const generateColumns = (data: any, dateRange: string[] | undefined, mode
     width: COLUMN_WIDTH(mode),
     height: (ROWS(data).length + 1) * ROW_HEIGHT,
     position: {
-      x: COLUMN_WIDTH(mode) + index * COLUMN_WIDTH(mode),
+      x: TABLE_WIDTH * 3 + index * COLUMN_WIDTH(mode),
       y: 0,
     },
     label: item.toString(),
@@ -105,17 +117,79 @@ export const generateColumns = (data: any, dateRange: string[] | undefined, mode
  * @returns 甘特图行配置
  */
 export const generateRows = (data: any, dateRange: string[] | undefined, mode: TIME_MODE) => {
-  return ROWS(data).map((item, index) => ({
-    id: `${index + 1}rn`,
-    shape: 'lane-row',
-    width: (COLS(dateRange, mode).length + 1) * COLUMN_WIDTH(mode),
-    height: ROW_HEIGHT,
-    position: {
-      x: 0,
-      y: ROW_HEIGHT + index * ROW_HEIGHT,
+  const tableHeaders = [
+    {
+      id: '1tfn',
+      shape: 'table-head',
+      width: TABLE_WIDTH,
+      height: ROW_HEIGHT,
+      position: {
+        x: 0,
+        y: 0,
+      },
+      label: 'soip02',
     },
-    label: item.equipName,
-  }))
+    {
+      id: '2tfn',
+      shape: 'table-head',
+      width: TABLE_WIDTH,
+      height: ROW_HEIGHT,
+      position: {
+        x: TABLE_WIDTH,
+        y: 0,
+      },
+      label: '生产单元',
+    },
+    {
+      id: '3tfn',
+      shape: 'table-head',
+      width: TABLE_WIDTH,
+      height: ROW_HEIGHT,
+      position: {
+        x: TABLE_WIDTH * 2,
+        y: 0,
+      },
+      label: '生产装置',
+    },
+  ]
+  const tableCells = ROWS(data).map((item, index) => {
+    const r = []
+    r.push({
+      id: `${index + 1}rn`,
+      shape: 'lane-row',
+      width: TABLE_WIDTH + COLS(dateRange, mode).length * COLUMN_WIDTH(mode),
+      height: ROW_HEIGHT,
+      position: {
+        x: TABLE_WIDTH * 2,
+        y: ROW_HEIGHT + index * ROW_HEIGHT,
+      },
+      label: item.equipName,
+    })
+    r.push({
+      id: `${index + 1}tcsn`,
+      shape: 'table-cell',
+      width: TABLE_WIDTH,
+      height: ROW_HEIGHT,
+      position: {
+        x: 0,
+        y: ROW_HEIGHT + index * ROW_HEIGHT,
+      },
+      label: item.soipLevel2,
+    })
+    r.push({
+      id: `${index + 1}tcdn`,
+      shape: 'table-cell',
+      width: TABLE_WIDTH,
+      height: ROW_HEIGHT,
+      position: {
+        x: TABLE_WIDTH,
+        y: ROW_HEIGHT + index * ROW_HEIGHT,
+      },
+      label: item.deviceName,
+    })
+    return r
+  })
+  return [...tableHeaders, ...tableCells.flat()]
 }
 
 /**
