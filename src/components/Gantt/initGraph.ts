@@ -35,7 +35,7 @@ export const initGraph = (mode: TIME_MODE) => {
       },
     },
     background: {
-      color: 'lightgreen',
+      // color: 'lightgreen',
     },
     connecting: {
       router: 'orth',

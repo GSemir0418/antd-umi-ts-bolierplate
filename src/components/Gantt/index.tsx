@@ -45,8 +45,8 @@ const Gantt = () => {
     if (!graph || !data) return
     const cells: Cell[] = []
     Array.from([
-      ...generateColumns(data, dateRange, timeMode),
       ...generateRows(data, dateRange, timeMode),
+      ...generateColumns(data, dateRange, timeMode),
       ...generateData(data, timeMode),
     ]).forEach((item: any) => {
       cells.push(graph.createNode(item))

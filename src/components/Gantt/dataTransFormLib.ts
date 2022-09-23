@@ -18,7 +18,7 @@ export const pxToMillionSecond = (px: number, mode: TIME_MODE) => {
  * @return 时间戳
  */
 export const positionXTotime = (x: number, mode: TIME_MODE) => {
-  return new Date(ORIGIN_TIME).getTime() + pxToMillionSecond(x - COLUMN_WIDTH(mode), mode)
+  return new Date(ORIGIN_TIME).getTime() + pxToMillionSecond(x - TABLE_WIDTH * 3, mode)
 }
 
 /**

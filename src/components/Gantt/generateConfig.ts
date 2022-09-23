@@ -9,12 +9,6 @@ import {
 /**
  * 默认配置
  */
-export type TIME_MODE = 'hour' | 'day' | 'day120' | 'day240' | 'default'
-export const COLUMN_WIDTH = (mode: TIME_MODE) => {
-  if (mode === 'hour' || mode === 'day120') return 120
-  else if (mode === 'day240') return 240
-  else return 60
-}
 export const TABLE_WIDTH = 200
 export const ROW_HEIGHT = 60
 export const ITEM_HEIGHT = 40
@@ -22,6 +16,12 @@ export const ITEM_HEIGHT = 40
 export let ORIGIN_TIME = `${new Date().getFullYear()}-${
   new Date().getMonth() + 1 >= 10 ? new Date().getMonth() + 1 : `0${new Date().getMonth() + 1}`
 }-${new Date().getDate()}`
+export type TIME_MODE = 'hour' | 'day' | 'day120' | 'day240' | 'default'
+export const COLUMN_WIDTH = (mode: TIME_MODE) => {
+  if (mode === 'hour' || mode === 'day120') return 120
+  else if (mode === 'day240') return 240
+  else return 60
+}
 
 /**
  * @desc 根据原始数据的yy字段生成行数组
