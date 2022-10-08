@@ -42,8 +42,8 @@ export const ROWS = (data: any[]) => {
       return {
         yy: item.yy,
         equipName: item.equipName,
-        soipLevel2: item.soipLevel2,
-        deviceName: item.soipLevel2,
+        soipLevel2: item.soipEn02,
+        deviceName: item.deviceName,
       }
     })
     // 对象数组去重

@@ -55,7 +55,7 @@ export const registerNodes = (mode: TIME_MODE) => {
     },
     true,
   )
-  // 行节点配置(三格+横道整体)
+  // 行节点配置(第三列+横道整体)
   Graph.registerNode(
     'lane-row',
     {
@@ -82,7 +82,7 @@ export const registerNodes = (mode: TIME_MODE) => {
           strokeWidth: 0.5,
           opacity: '.5',
         },
-        // 三格
+        // 第三列
         'name-rect': {
           width: TABLE_WIDTH,
           height: ROW_HEIGHT,
@@ -105,7 +105,7 @@ export const registerNodes = (mode: TIME_MODE) => {
     },
     true,
   )
-  // 表格前一半配置
+  // 表格前两列配置
   Graph.registerNode(
     'table-cell',
     {
@@ -125,7 +125,7 @@ export const registerNodes = (mode: TIME_MODE) => {
         },
       ],
       attrs: {
-        // 第一格
+        // 第一列
         body: {
           width: TABLE_WIDTH,
           height: ROW_HEIGHT,
@@ -135,7 +135,7 @@ export const registerNodes = (mode: TIME_MODE) => {
           // opacity: '.5',
           strokeWidth: 2,
         },
-        // 第二格
+        // 第二列(与第一列一致)
         'name-rect': {
           width: TABLE_WIDTH,
           height: ROW_HEIGHT,
@@ -150,9 +150,10 @@ export const registerNodes = (mode: TIME_MODE) => {
           ref: 'name-rect',
           refY: 0.5,
           refX: 0.5,
+          fill: '#155aa3',
           textAnchor: 'middle',
           fontWeight: 'bold',
-          fill: colorMap.yTx,
+          // fill: colorMap.yTx,
           fontSize: 12,
         },
       },
@@ -168,9 +169,10 @@ export const registerNodes = (mode: TIME_MODE) => {
       inherit: 'rect',
       attrs: {
         body: {
-          rx: 10,
-          ry: 10,
-          strokeWidth: 1,
+          // 圆角
+          rx: 8,
+          ry: 8,
+          strokeWidth: 0.5,
           stroke: 'white',
           // fill: '#EFF4FF',
         },

@@ -6,7 +6,7 @@ import { minuteGap, positionXTotime, pxToMillionSecond, timeFormat } from './dat
 import s from './Gantt.module.less'
 import { generateColumns, generateData, generateRows } from './generateConfig'
 import { initGraph } from './initGraph'
-import fakeData from '@/components/Gantt/fakeData.json'
+import fakeData from '@/components/Gantt/fakeData2.json'
 
 const Gantt = () => {
   const [data, setData] = useState<any>()
